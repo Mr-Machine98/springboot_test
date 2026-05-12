@@ -25,7 +25,7 @@ public class CuentaServiceImpl implements ICuentaService {
 	 */
 	@Override
 	public Cuenta findCuentaById(Long id) {
-		return cuentaRepository.findById(id);
+		return cuentaRepository.findById(id).orElseThrow();
 	}
 
 	
@@ -36,7 +36,7 @@ public class CuentaServiceImpl implements ICuentaService {
 	 */
 	@Override
 	public int revisarTotalTransferencias(Long id) {
-		Banco banco = bancoRepository.findById(id);
+		Banco banco = bancoRepository.findById(id).orElseThrow();
 		return banco.getTotalTransferencias();
 	}
 
@@ -48,7 +48,7 @@ public class CuentaServiceImpl implements ICuentaService {
 	 */
 	@Override
 	public BigDecimal revisarSaldo(Long id) {
-		Cuenta cuenta = cuentaRepository.findById(id);
+		Cuenta cuenta = cuentaRepository.findById(id).orElseThrow();
 		return cuenta.getSaldo();
 	}
 
@@ -62,18 +62,18 @@ public class CuentaServiceImpl implements ICuentaService {
 	 */
 	@Override
 	public void transferir(Long numCuentaOrigen, Long numCuentaDestino, BigDecimal monto, Long bancoId) {
-		Banco banco = bancoRepository.findById(bancoId);
+		Banco banco = bancoRepository.findById(bancoId).orElseThrow();
 		int totalTransferencias = banco.getTotalTransferencias();
 		banco.setTotalTransferencias(++totalTransferencias);
-		bancoRepository.update(banco);
+		bancoRepository.save(banco);
 		
-		Cuenta cuentaOrigen = cuentaRepository.findById(numCuentaOrigen);
+		Cuenta cuentaOrigen = cuentaRepository.findById(numCuentaOrigen).orElseThrow();
 		cuentaOrigen.debito(monto);
-		cuentaRepository.update(cuentaOrigen);
+		cuentaRepository.save(cuentaOrigen);
 		
-		Cuenta cuentaDestino = cuentaRepository.findById(numCuentaDestino);
+		Cuenta cuentaDestino = cuentaRepository.findById(numCuentaDestino).orElseThrow();
 		cuentaDestino.credito(monto);
-		cuentaRepository.update(cuentaDestino);
+		cuentaRepository.save(cuentaDestino);
 		
 	}
 

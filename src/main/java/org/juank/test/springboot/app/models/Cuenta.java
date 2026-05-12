@@ -4,17 +4,28 @@ import java.math.BigDecimal;
 
 import org.juank.test.springboot.app.exceptions.DineroInsuficienteException;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
+@Entity
 @NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "cuentas")
 public class Cuenta {
 	
-	private Long id;	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
 	private String persona;
+	
 	private BigDecimal saldo;
 	
 	public void debito(BigDecimal monto) {

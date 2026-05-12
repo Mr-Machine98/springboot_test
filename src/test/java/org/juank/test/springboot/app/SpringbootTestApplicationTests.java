@@ -65,10 +65,10 @@ class SpringbootTestApplicationTests {
 		
 		verify(cuentaRepository, times(3)).findById(1L); // Verificamos que el método findById del repositorio de cuentas haya sido llamado 3 veces con el ID 1L
 		verify(cuentaRepository, times(3)).findById(2L); // Verificamos que el método findById del repositorio de cuentas haya sido llamado 3 veces con el ID 2L
-		verify(cuentaRepository, times(2)).update(any(Cuenta.class)); // Verificamos que el método update del repositorio de cuentas haya sido llamado 2 veces con cualquier objeto de tipo Cuenta 
+		verify(cuentaRepository, times(2)).save(any(Cuenta.class)); // Verificamos que el método update del repositorio de cuentas haya sido llamado 2 veces con cualquier objeto de tipo Cuenta 
 	
 		verify(bancoRepository, times(2)).findById(1L); // Verificamos que el método findById del repositorio de bancos haya sido llamado 2 vez con el ID 1L
-		verify(bancoRepository, times(1)).update(any()); // Verificamos que el método update del repositorio de bancos haya sido llamado 1 vez con cualquier objeto
+		verify(bancoRepository, times(1)).save(any()); // Verificamos que el método update del repositorio de bancos haya sido llamado 1 vez con cualquier objeto
 	}
 	
 	@Test
