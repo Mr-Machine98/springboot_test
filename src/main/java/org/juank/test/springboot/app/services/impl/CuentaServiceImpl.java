@@ -8,6 +8,7 @@ import org.juank.test.springboot.app.repositories.IBancoRepository;
 import org.juank.test.springboot.app.repositories.ICuentaRepository;
 import org.juank.test.springboot.app.services.ICuentaService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 
@@ -24,6 +25,7 @@ public class CuentaServiceImpl implements ICuentaService {
 	 * @return La cuenta encontrada o null si no se encuentra.
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public Cuenta findCuentaById(Long id) {
 		return cuentaRepository.findById(id).orElseThrow();
 	}
@@ -35,6 +37,7 @@ public class CuentaServiceImpl implements ICuentaService {
 	 * @return El total de transferencias realizadas por el banco.
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public int revisarTotalTransferencias(Long id) {
 		Banco banco = bancoRepository.findById(id).orElseThrow();
 		return banco.getTotalTransferencias();
@@ -47,6 +50,7 @@ public class CuentaServiceImpl implements ICuentaService {
 	 * @return El saldo actual de la cuenta.
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public BigDecimal revisarSaldo(Long id) {
 		Cuenta cuenta = cuentaRepository.findById(id).orElseThrow();
 		return cuenta.getSaldo();
@@ -61,6 +65,7 @@ public class CuentaServiceImpl implements ICuentaService {
 	 * @return void
 	 */
 	@Override
+	@Transactional
 	public void transferir(Long numCuentaOrigen, Long numCuentaDestino, BigDecimal monto, Long bancoId) {
 		Banco banco = bancoRepository.findById(bancoId).orElseThrow();
 		int totalTransferencias = banco.getTotalTransferencias();
