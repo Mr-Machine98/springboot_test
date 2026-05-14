@@ -1,10 +1,24 @@
 package org.juank.test.springboot.app.services;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.juank.test.springboot.app.models.Cuenta;
 
 public interface ICuentaService {
+	
+	/**
+	 * El método findAll() se encarga de obtener una lista de todas las cuentas utilizando el repositorio de cuentas.
+	 * @return Una lista de todas las cuentas disponibles.
+	 */
+	List<Cuenta> findAll();
+	
+	/**
+	 * El método save(Cuenta cuenta) se encarga de guardar una cuenta utilizando el repositorio de cuentas.
+	 * @param cuenta La cuenta que se desea guardar.
+	 * @return La cuenta guardada con su ID asignado.
+	 */
+	Cuenta save(Cuenta cuenta);
 	
 	/**
 	 * El método findCuentaById(Long id) se encarga de buscar una cuenta por su ID utilizando el repositorio de cuentas.

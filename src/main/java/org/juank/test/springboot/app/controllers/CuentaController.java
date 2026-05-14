@@ -1,6 +1,7 @@
 package org.juank.test.springboot.app.controllers;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 import org.juank.test.springboot.app.models.Cuenta;
@@ -31,7 +32,7 @@ public class CuentaController {
 	}
 	
 	@PostMapping("/transferir")
-	public ResponseEntity<?> postMethodName(@RequestBody TransaccionDTO dto) {
+	public ResponseEntity<?> post(@RequestBody TransaccionDTO dto) {
 		this.cuentaService.transferir(
 			dto.getCuentaOrigenId(),
 			dto.getCuentaDestinoId(),
@@ -46,5 +47,17 @@ public class CuentaController {
 		));
 	}
 	
+	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
+	public Cuenta save(@RequestBody Cuenta cuenta) {
+		// Delegar al servicio para guardar la cuenta y devolver la entidad persistida
+		return this.cuentaService.save(cuenta);
+	}
+
+	@GetMapping
+	@ResponseStatus(HttpStatus.OK)
+	public List<Cuenta> findAll() {
+		return this.cuentaService.findAll();
+	}
 
 }

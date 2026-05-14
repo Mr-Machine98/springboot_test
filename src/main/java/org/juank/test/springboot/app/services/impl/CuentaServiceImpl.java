@@ -1,6 +1,7 @@
 package org.juank.test.springboot.app.services.impl;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.juank.test.springboot.app.models.Banco;
 import org.juank.test.springboot.app.models.Cuenta;
@@ -43,7 +44,6 @@ public class CuentaServiceImpl implements ICuentaService {
 		return banco.getTotalTransferencias();
 	}
 
-	
 	/**
 	 * El método revisarSaldo(Long id) se encarga de revisar el saldo de una cuenta específica utilizando el repositorio de cuentas.
 	 * @param id El ID de la cuenta para la cual se desea revisar el saldo.
@@ -82,4 +82,26 @@ public class CuentaServiceImpl implements ICuentaService {
 		
 	}
 
+	/**
+	 * El método findAll() se encarga de obtener una lista de todas las cuentas utilizando el repositorio de cuentas.
+	 * @return Una lista de todas las cuentas disponibles.
+	 */
+	@Override
+	public List<Cuenta> findAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	/**
+	 * El método save(Cuenta cuenta) se encarga de guardar una cuenta utilizando el repositorio de cuentas.
+	 * @param cuenta La cuenta que se desea guardar.
+	 * @return La cuenta guardada con su ID asignado.
+	 */
+	@Override
+	public Cuenta save(Cuenta cuenta) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 }
