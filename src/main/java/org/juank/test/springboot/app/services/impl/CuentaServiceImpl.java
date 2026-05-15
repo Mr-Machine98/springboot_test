@@ -87,9 +87,9 @@ public class CuentaServiceImpl implements ICuentaService {
 	 * @return Una lista de todas las cuentas disponibles.
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public List<Cuenta> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.cuentaRepository.findAll();
 	}
 
 
@@ -99,9 +99,9 @@ public class CuentaServiceImpl implements ICuentaService {
 	 * @return La cuenta guardada con su ID asignado.
 	 */
 	@Override
+	@Transactional
 	public Cuenta save(Cuenta cuenta) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.cuentaRepository.save(cuenta);
 	}
 	
 }

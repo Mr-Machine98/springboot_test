@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
 
 import org.juank.test.springboot.app.exceptions.DineroInsuficienteException;
 import org.juank.test.springboot.app.models.Cuenta;
@@ -104,9 +106,76 @@ class SpringbootTestApplicationTests {
 		assertTrue(cuenta1 == cuenta2); // Verificamos que las dos variables cuenta1 y cuenta2 son exactamente la misma instancia de cuenta utilizando el operador de igualdad de referencia (==)
 		assertEquals("Juan", cuenta1.getPersona()); // Verificamos que el nombre de la persona asociada a la cuenta sea igual a "Juan"
 		assertEquals("Juan", cuenta2.getPersona()); // Verificamos que el nombre de la persona asociada a la cuenta sea igual a "Juan"
-		verify(cuentaRepository, times(2)).findById(1l);
+		verify(cuentaRepository, times(2)).findById(1l); // Verificamos que el findbyId se llame 2 veces
 	}
 
 	
+	@Test
+	@DisplayName(">>> Test para verificar que el método findAll devuelve todos los datos para comparar")
+	void testfindAll() {
+		// Given
+		List<Cuenta> cuentas = Arrays.asList( // Crea una lista de cuentas para usar como datos de prueba.
+				Datos.getCuenta001().orElseThrow(), // Obtiene la primera cuenta de prueba; lanza excepción si no existe.
+				Datos.getCuenta002().orElseThrow()  // Obtiene la segunda cuenta de prueba; lanza excepción si no existe.
+		);
+		when(this.cuentaRepository.findAll()).thenReturn(cuentas); 
+		// Simula el comportamiento del repositorio:
+		// cuando se invoque findAll(), devolverá la lista "cuentas".
+
+		// When
+		List<Cuenta> cuentasExpected = this.cuentaService.findAll(); 
+		// Ejecuta el método real del servicio que internamente llama al repositorio.
+
+		// Then
+		assertFalse(cuentasExpected.isEmpty()); 
+		// Verifica que la lista retornada no esté vacía.
+
+		assertEquals(2, cuentasExpected.size()); 
+		// Verifica que la lista tenga exactamente 2 elementos.
+
+		assertTrue(cuentasExpected.contains(Datos.getCuenta002().orElseThrow())); 
+		// Verifica que la lista contenga la segunda cuenta esperada.
+
+		verify(this.cuentaRepository).findAll();
+		// Verifica que el método findAll() del repositorio haya sido llamado una vez.
+
+	}
+	
+	@Test
+	@DisplayName(">>> Test para probar el métod save de cuentaRepository")
+	void testSave() {
+		Cuenta newCuenta = new Cuenta(null, "Pepe", new BigDecimal("3000")); 
+		// Crea una nueva cuenta sin ID, simulando una entidad nueva antes de guardarse en la base de datos.
+
+		when(cuentaRepository.save(any())).then( inv -> {
+			// Simula el comportamiento del método save() del repositorio.
+			// any() indica que acepta cualquier objeto Cuenta como parámetro.
+
+			Cuenta c = inv.getArgument(0); 
+			// Obtiene el objeto Cuenta enviado al método save().
+
+			c.setId(3L); 
+			// Simula que la base de datos genera automáticamente el ID 3 al guardar la cuenta.
+
+			return c;
+			// Retorna la cuenta ya con el ID asignado.
+		});
+
+		Cuenta cuentaDb = this.cuentaService.save(newCuenta); 
+		// Ejecuta el método save() del servicio que internamente usa el repositorio.
+
+		assertEquals("Pepe", cuentaDb.getPersona()); 
+		// Verifica que el nombre de la persona guardada sea "Pepe".
+
+		assertEquals(3, cuentaDb.getId()); 
+		// Verifica que el ID asignado a la cuenta sea 3.
+
+		assertEquals("3000", cuentaDb.getSaldo().toPlainString()); 
+		// Verifica que el saldo guardado sea exactamente "3000".
+
+		verify(cuentaRepository).save(any());
+		// Verifica que el método save() del repositorio haya sido ejecutado.
+
+	}
 
 }
